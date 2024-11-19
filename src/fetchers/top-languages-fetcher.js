@@ -23,19 +23,41 @@ import {
 const fetcher = (variables, token) => {
   return request(
     {
+      // query: `
+      // query userInfo($login: String!) {
+      //   user(login: $login) {
+      //     # fetch only owner repos & not forks
+      //     repositories(ownerAffiliations: [OWNER, ORGANIZATION_MEMBER, COLLABORATOR], isFork: false, first: 100) {
+      //       nodes {
+      //         name
+      //         languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+      //           edges {
+      //             size
+      //             node {
+      //               color
+      //               name
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+      // `,
       query: `
       query userInfo($login: String!) {
         user(login: $login) {
-          # fetch only owner repos & not forks
-          repositories(ownerAffiliations: [OWNER, ORGANIZATION_MEMBER, COLLABORATOR], isFork: false, first: 100) {
-            nodes {
-              name
-              languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
-                edges {
-                  size
-                  node {
-                    color
-                    name
+          contributionsCollection {
+            commitContributionsByRepository {
+              repository {
+                name
+                languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+                  edges {
+                    size
+                    node {
+                      color
+                      name
+                    }
                   }
                 }
               }
